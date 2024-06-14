@@ -8,28 +8,48 @@
 #include <string.h>
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
+#include "hardware/pio.h"
+#include "hardware/timer.h"
 #include "pico/binary_info.h"
+
 #include "lcd.h"
+#include "quadrature_encoder.pio.h"
 
 int main() {
-    lcd_init();
+    int new_value, delta, old_value;
+    char message[MAX_CHARS];
 
-    static char *message[] =
-            {
-                    "Firmware For", "Coil Winder",
-                    "Coil Winder", "by Serialbocks",
-                    "Raspberry Pi", "Pico"
-            };
+    // Base pin to connect the A phase of the encoder.
+    // The B phase must be connected to the next pin
+    const uint PIN_AB = 10;
+
+    stdio_init_all();
+
+    lcd_init();
+    PIO pio = pio0;
+    const uint sm = 0;
+
+    // we don't really need to keep the offset, as this program must be loaded
+    // at offset 0
+    pio_add_program(pio, &quadrature_encoder_program);
+    quadrature_encoder_program_init(pio, sm, PIN_AB, 0);
+
+    snprintf(message, MAX_CHARS, "val: %d", new_value);
+    lcd_clear();
+    lcd_write_line(0, message);
 
     while (1) {
-        for (int m = 0; m < sizeof(message) / sizeof(message[0]); m += MAX_LINES) {
-            for (int line = 0; line < MAX_LINES; line++) {
-                lcd_set_cursor(line, (MAX_CHARS / 2) - strlen(message[m + line]) / 2);
-                lcd_string(message[m + line]);
-            }
-            sleep_ms(2000);
+        new_value = quadrature_encoder_get_count(pio, sm);
+        delta = new_value - old_value;
+        old_value = new_value;
+        if(delta != 0) {
+            snprintf(message, MAX_CHARS, "val: %d", -(old_value / 2));
             lcd_clear();
+            lcd_write_line(0, message);
         }
+
+        sleep_ms(10);
+        
     }
 
 }

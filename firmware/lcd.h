@@ -12,5 +12,6 @@ void lcd_clear(void);
 void lcd_set_cursor(int line, int position);
 void lcd_string(const char *s);
 void lcd_init();
+void lcd_write_line(int line, char *message);
 
 #endif

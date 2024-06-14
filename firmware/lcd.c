@@ -105,6 +105,11 @@ void lcd_string(const char *s) {
     }
 }
 
+void lcd_write_line(int line, char *message) {
+    lcd_set_cursor(line, (MAX_CHARS / 2) - (strlen(message) / 2));
+    lcd_string(message);
+}
+
 void lcd_init() {
     // This example will use I2C0 on the default SDA and SCL pins (4, 5 on a Pico)
     i2c_init(i2c_default, 100 * 1000);
