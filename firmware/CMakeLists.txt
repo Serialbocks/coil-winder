@@ -1,6 +1,6 @@
-add_executable(firmware
-        firmware.c
-        )
+FILE(GLOB MyCSources *.c)
+ADD_EXECUTABLE(firmware ${MyCSources})
+
 
 # pull in common dependencies and additional i2c hardware support
 target_link_libraries(firmware pico_stdlib hardware_i2c)
