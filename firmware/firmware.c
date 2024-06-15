@@ -16,7 +16,7 @@
 #include "quadrature_encoder.pio.h"
 
 int main() {
-    int new_value, delta, old_value, display_value, old_display_value = 0;
+    int new_value, old_value, display_value, old_display_value = 0;
     char message[MAX_CHARS];
 
     // Base pin to connect the A phase of the encoder.
@@ -40,7 +40,6 @@ int main() {
 
     while (1) {
         new_value = quadrature_encoder_get_count(pio, sm);
-        delta = new_value - old_value;
         old_value = new_value;
         display_value = -(old_value / 2);
         if(display_value != old_display_value) {
@@ -49,7 +48,7 @@ int main() {
             lcd_write_line(0, message);
         }
         old_display_value = display_value;
-        //sleep_ms(100);
+        sleep_ms(10);
         
     }
 
