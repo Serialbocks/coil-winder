@@ -16,7 +16,7 @@
 #include "quadrature_encoder.pio.h"
 
 int main() {
-    int new_value, old_value, display_value, old_display_value = 0;
+    int new_value, old_value, display_value = 0, old_display_value = 0;
     char message[MAX_CHARS];
 
     // Base pin to connect the A phase of the encoder.
