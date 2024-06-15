@@ -32,7 +32,14 @@ int main() {
     // we don't really need to keep the offset, as this program must be loaded
     // at offset 0
     pio_add_program(pio, &quadrature_encoder_program);
-    quadrature_encoder_program_init(pio, sm, PIN_AB, 2);
+    quadrature_encoder_program_init(pio, sm, PIN_AB, 0);
+
+    //static char *message[] =
+    //{
+    //        "Firmware For", "Coil Winder",
+    //        "Coil Winder", "by Serialbocks",
+    //        "Raspberry Pi", "Pico"
+    //};
 
     snprintf(message, MAX_CHARS, "val: %d", old_value);
     lcd_clear();

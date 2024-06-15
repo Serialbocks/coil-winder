@@ -135,7 +135,7 @@ static inline int32_t quadrature_encoder_get_count(PIO pio, uint sm)
         ret = pio_sm_get_blocking(pio, sm);
         n--;
     }
-    return -(ret / 2);
+    return (ret / 4);
 }
 
 %}
