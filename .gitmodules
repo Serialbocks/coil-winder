@@ -1,4 +1,4 @@
 [submodule "schematics/coil_winder/KiCad-RP-Pico"]
 	path = schematics/coil_winder/KiCad-RP-Pico
-	url = https://github.com/ncarandini/KiCad-RP-Pico.git
+	url = https://github.com/Serialbocks/KiCad-Libs
 	branch = main
