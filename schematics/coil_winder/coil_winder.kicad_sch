@@ -1662,7 +1662,7 @@
     (property "Reference" "C2" (at 175.26 26.67 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "C" (at 175.26 29.21 0)
+    (property "Value" "10uF" (at 175.26 29.21 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "" (at 172.4152 31.75 0)
