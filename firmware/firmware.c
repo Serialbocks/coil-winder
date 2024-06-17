@@ -16,9 +16,10 @@
 #include "quadrature_encoder.pio.h"
 
 int main() {
-    int new_value, old_value = 0;
+    int encoder_val_new, encoder_val_old = 0;
     char message[MAX_CHARS];
     uint switch_new, switch_old = 0;
+    uint switch_count_new = 0, switch_count_old = 0;
 
     // Base pin to connect the A phase of the encoder.
     // The B phase must be connected to the next pin
@@ -46,26 +47,33 @@ int main() {
     //        "Raspberry Pi", "Pico"
     //};
 
-    snprintf(message, MAX_CHARS, "val: %d", old_value);
+    snprintf(message, MAX_CHARS, "val: %d", encoder_val_old);
     lcd_clear();
     lcd_write_line(0, message);
+    snprintf(message, MAX_CHARS, "switch: %u", switch_old);
+    lcd_write_line(1, message);
 
     while (1) {
         // Encoder Value
-        new_value = quadrature_encoder_get_count(pio, sm);
+        encoder_val_new = quadrature_encoder_get_count(pio, sm);
         
         // Switch Value
         switch_new = gpio_get(SWITCH_PIN);
-        if(old_value != new_value || switch_old != switch_new) {
+
+        if(switch_new > switch_old) {
+            switch_count_new++;
+        }
+        if(encoder_val_old != encoder_val_new || switch_count_new != switch_count_old) {
             lcd_clear();
-            snprintf(message, MAX_CHARS, "val: %d", new_value);
+            snprintf(message, MAX_CHARS, "val: %d", encoder_val_new);
             lcd_write_line(0, message);
-            snprintf(message, MAX_CHARS, "switch: %u", switch_new);
+            snprintf(message, MAX_CHARS, "switch: %u", switch_count_new);
             lcd_write_line(1, message);
         }
 
-        old_value = new_value;
+        encoder_val_old = encoder_val_new;
         switch_old = switch_new;
+        switch_count_old = switch_count_new;
 
         sleep_ms(10);
         
